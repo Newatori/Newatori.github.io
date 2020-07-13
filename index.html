@@ -45,28 +45,22 @@
 			
 			var texture = new THREE.TextureLoader().load( "textures/360.jpg" );
 			var material = new THREE.MeshBasicMaterial({ map: texture });	
-			var vrmode = true;			
+			var vrmode = false;			
 			material.side = THREE.DoubleSide;
 			var geometry = new THREE.SphereGeometry( 5, 50, 50 );;	
 			//var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			var sphere = new THREE.Mesh( geometry, material );
 			scene.add( sphere );
 			var fullScreenAlreadyChanged = false;
-		
-					
+			camera.position.z = 0;		
 			
-			camera.position.z = 0;			
 			$(renderer.domElement).on('mousedown', function(e) {
 				isDragging = true;
 				var clientX = 0;
 				var clientY = 0;
-				if(OS =="Android" || OS =="IOS"){
-					clientX = e.originalEvent.touches[ 0 ].clientX;
-					clientY = e.originalEvent.touches[ 0 ].clientY;
-				}else{
-				    clientX = event.clientX ;
-				    clientY = event.clientY ;
-				}			
+				
+				clientX = event.clientX;
+				clientY = event.clientY;						
 
 				onMouseDownMouseX = clientX;
 				onMouseDownMouseY = clientY;
@@ -78,48 +72,68 @@
 				if(isDragging){
 					//console.log("x:"+e.clientX + " y:"+e.clientY);
 					var clientX = 0;
-					var clientY = 0;
-					if(OS =="Android" || OS =="IOS"){
-						clientX = e.originalEvent.touches[ 0 ].clientX;
-						clientY = e.originalEvent.touches[ 0 ].clientY;
+					var clientY = 0;				
+					clientX = event.clientX ;
+					clientY = event.clientY ;
+					if(lastXposition < event.clientX){
+					direction = "left";	
 					}else{
-						clientX = event.clientX ;
-						clientY = event.clientY ;
-						if(lastXposition < event.clientX){
-						direction = "left";	
-						}else{
-							direction = "right";
-						}
-					}
+						direction = "right";
+					}				
 					
 					lon = ( onMouseDownMouseX - clientX ) * 0.1 + onMouseDownLon;
 					lat = ( clientY - onMouseDownMouseY ) * 0.1 + onMouseDownLat;
 						
 						lastXposition = event.clientX;
-					}
+				}
 			
 			}).on('mouseup', function(e) {
 				isDragging = false;
 			
 			});
 			
+			//Mobile events			
+			$(renderer.domElement).on('touchstart', function(e) {
+				isDragging = true;
+				var clientX = 0;
+				var clientY = 0;
+				var touchobj = e.touches[0];
+				clientX = touchobj.clientX;
+				clientY = touchobj.clientY;	
+				onMouseDownMouseX = clientX;
+				onMouseDownMouseY = clientY;
+				onMouseDownLon = lon;
+				onMouseDownLat = lat;
+			})
+			.on('touchmove', function(e) {
+				if(isDragging){					
+					var clientX = 0;
+					var clientY = 0;
+					var touchobj = e.touches[0];
+					clientX = touchobj.clientX;
+					clientY = touchobj.clientY;
+					lon = ( onMouseDownMouseX - clientX ) * 0.1 + onMouseDownLon;
+					lat = ( clientY - onMouseDownMouseY ) * 0.1 + onMouseDownLat;
+					lastXposition = event.clientX;
+				}
+			
+			}).on('touchend', function(e) {
+				isDragging = false;
+			});
+						
 			function getMobileOperatingSystem() {
 			  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
 				  // Windows Phone must come first because its UA also contains "Android"
 				if (/windows phone/i.test(userAgent)) {
 					return "Windows Phone";
 				}
-
 				if (/android/i.test(userAgent)) {
 					return "Android";
 				}
-
 				// iOS detection from: http://stackoverflow.com/a/9039885/177710
 				if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
 					return "iOS";
 				}
-
 				return "unknown";
 			}
 			
@@ -182,7 +196,7 @@
 			}
 			
 			document.getElementById ("BT_VR").addEventListener ("click", switchVRMode, false);
-			window.addEventListener( 'resize', onWindowResize, false );			
+			window.addEventListener( 'resize', onWindowResize, false );
 			animate();
 			
 		</script>

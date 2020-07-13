@@ -171,15 +171,14 @@
 
 				camera.lookAt( new THREE.Vector3(500 * Math.sin( phi ) * Math.cos( theta ),500 * Math.cos( phi ),500 * Math.sin( phi ) * Math.sin( theta ) ));
 				if(vrmode){
-					effect.render(scene, camera);
-					VRcontrols.update();					
+					VRcontrols.update();	
+					effect.render(scene, camera);									
 					toggleFullScreen(true);
 					
 						
-				}else{					
+				}else{			
 					renderer.render( scene, camera );
-					onWindowResize();
-					VRcontrols.update();
+					onWindowResize();					
 					toggleFullScreen(false);
 				}
 			}

@@ -20,7 +20,8 @@
 		<script type="module">
 				
 			import { StereoEffect } from './js/StereoEffect.js';
-			//import { DeviceOrientationControls } from './js/DeviceOrientationControls.js';
+			import { DeviceOrientationControls } from './js/DeviceOrientationControls.js';
+			
 			var OS = getMobileOperatingSystem();
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -40,7 +41,7 @@
 			controls.autoRotate = true;
 			controls.autoRotateSpeed = 1;
 			
-			var VRcontrols = new THREE.DeviceOrientationControls(camera);
+			var VRcontrols = new DeviceOrientationControls(camera);
 			
 			var texture = new THREE.TextureLoader().load( "textures/360.jpg" );
 			var material = new THREE.MeshBasicMaterial({ map: texture });	

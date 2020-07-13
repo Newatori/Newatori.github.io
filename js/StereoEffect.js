@@ -14,11 +14,12 @@ var StereoEffect = function ( renderer ) {
 
 	var _stereo = new StereoCamera();
 	_stereo.aspect = 0.5;
+	_stereo.eyeSep = 0;
 	var size = new Vector2();
 
 	this.setEyeSeparation = function ( eyeSep ) {
 
-		_stereo.eyeSep = eyeSep;
+		_stereo.eyeSep = 0;
 
 	};
 

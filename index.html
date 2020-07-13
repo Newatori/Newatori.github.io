@@ -61,8 +61,8 @@
 				var clientX = 0;
 				var clientY = 0;
 				if(OS =="Android" || OS =="IOS"){
-					clientX = event.touches[ 0 ].clientX;
-					clientY = event.touches[ 0 ].clientY;
+					clientX = e.originalEvent.touches[ 0 ].clientX;
+					clientY = e.originalEvent.touches[ 0 ].clientY;
 				}else{
 				    clientX = event.clientX ;
 				    clientY = event.clientY ;
@@ -80,8 +80,8 @@
 					var clientX = 0;
 					var clientY = 0;
 					if(OS =="Android" || OS =="IOS"){
-						clientX = event.touches[ 0 ].clientX;
-						clientY = event.touches[ 0 ].clientY;
+						clientX = e.originalEvent.touches[ 0 ].clientX;
+						clientY = e.originalEvent.touches[ 0 ].clientY;
 					}else{
 						clientX = event.clientX ;
 						clientY = event.clientY ;
@@ -165,18 +165,18 @@
 				}else{					
 					renderer.render( scene, camera );
 					onWindowResize();
+					VRcontrols.update();
 					toggleFullScreen(false);
 				}
 			}
 			
 			function toggleFullScreen(active) {
-				if(fullScreenAlreadyChanged == false && document.fullscreenElement === null){
+				if(fullScreenAlreadyChanged == false){
 					fullScreenAlreadyChanged = true;
-					if(active && document.isActive){
+					if(active){
 						document.documentElement.requestFullscreen();
-					}else{
-						if(document.isFullscreen)
-							document.exitFullscreen();
+					}else{						
+						document.exitFullscreen();
 					}
 				}
 			}

@@ -14,12 +14,13 @@
 		<script src="js/three.js"></script>
 		<script src="js/StereoEffect.js"></script>
 		<script src="js/DeviceOrientationControls.js"></script>
-		<script src="js/OrbitControls.js"></script>
+		<script src="js/OrbitControls.js"></script>		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
 		
 		<script type="module">
 				
 			import { StereoEffect } from './js/StereoEffect.js';
+			//import { DeviceOrientationControls } from './js/DeviceOrientationControls.js';
 			
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -38,6 +39,9 @@
 			var controls = new THREE.OrbitControls(camera);
 			controls.autoRotate = true;
 			controls.autoRotateSpeed = 1;
+			
+			var VRcontrols = new THREE.DeviceOrientationControls(camera);
+			
 			var texture = new THREE.TextureLoader().load( "textures/360.jpg" );
 			var material = new THREE.MeshBasicMaterial({ map: texture });	
 			var vrmode = true;			
@@ -103,10 +107,12 @@
 				requestAnimationFrame( animate );	
 
 				if ( isDragging === false ) {
-					if(direction == "right")
-						lon += 0.05;
-					else
-						lon -= 0.05;
+					if(!vrmode){
+						if(direction == "right")
+							lon += 0.05;
+						else
+							lon -= 0.05;
+					}
 
 				}
 				
@@ -117,6 +123,7 @@
 				camera.lookAt( new THREE.Vector3(500 * Math.sin( phi ) * Math.cos( theta ),500 * Math.cos( phi ),500 * Math.sin( phi ) * Math.sin( theta ) ));
 				if(vrmode){
 					effect.render(scene, camera);
+					VRcontrols.update();
 					toggleFullScreen(true);
 				}else{					
 					renderer.render( scene, camera );

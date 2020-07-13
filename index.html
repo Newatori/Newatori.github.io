@@ -12,8 +12,8 @@
 	</head>
 	<body>
 		<script src="js/three.js"></script>
-		<script src="js/StereoEffect.js"></script>
-		<script src="js/DeviceOrientationControls.js"></script>
+		<script type="module" src="js/StereoEffect.js"></script>
+		<script type="module" src="js/DeviceOrientationControls.js"></script>
 		<script src="js/OrbitControls.js"></script>		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
 		
@@ -51,7 +51,7 @@
 			//var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			var sphere = new THREE.Mesh( geometry, material );
 			scene.add( sphere );
-	
+			var fullScreenAlreadyChanged = false;
 		
 					
 			
@@ -134,7 +134,7 @@
 			
 			function switchVRMode(){
 				vrmode = !vrmode;
-				
+				fullScreenAlreadyChanged = false;
 			}
 			
 			function animate() {
@@ -158,8 +158,10 @@
 				camera.lookAt( new THREE.Vector3(500 * Math.sin( phi ) * Math.cos( theta ),500 * Math.cos( phi ),500 * Math.sin( phi ) * Math.sin( theta ) ));
 				if(vrmode){
 					effect.render(scene, camera);
-					VRcontrols.update();
+					VRcontrols.update();					
 					toggleFullScreen(true);
+					
+						
 				}else{					
 					renderer.render( scene, camera );
 					onWindowResize();
@@ -168,10 +170,14 @@
 			}
 			
 			function toggleFullScreen(active) {
-				if(active){
-					document.documentElement.requestFullscreen();
-				}else{
-					document.exitFullscreen();
+				if(fullScreenAlreadyChanged == false && document.fullscreenElement === null){
+					fullScreenAlreadyChanged = true;
+					if(active && document.isActive){
+						document.documentElement.requestFullscreen();
+					}else{
+						if(document.isFullscreen)
+							document.exitFullscreen();
+					}
 				}
 			}
 			

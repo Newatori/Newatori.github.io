@@ -21,7 +21,7 @@
 				
 			import { StereoEffect } from './js/StereoEffect.js';
 			//import { DeviceOrientationControls } from './js/DeviceOrientationControls.js';
-			
+			var OS = getMobileOperatingSystem();
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 			var renderer = new THREE.WebGLRenderer();				
@@ -57,8 +57,15 @@
 			camera.position.z = 0;			
 			$(renderer.domElement).on('mousedown', function(e) {
 				isDragging = true;
-				var clientX = event.clientX || event.touches[ 0 ].clientX;
-				var clientY = event.clientY || event.touches[ 0 ].clientY;
+				var clientX = 0;
+				var clientY = 0;
+				if(OS =="Android" || OS =="IOS"){
+					clientX = event.touches[ 0 ].clientX;
+					clientY = event.touches[ 0 ].clientY;
+				}else{
+				    clientX = event.clientX ;
+				    clientY = event.clientY ;
+				}			
 
 				onMouseDownMouseX = clientX;
 				onMouseDownMouseY = clientY;
@@ -69,14 +76,21 @@
 			.on('mousemove', function(e) {
 				if(isDragging){
 					//console.log("x:"+e.clientX + " y:"+e.clientY);
-					var clientX = event.clientX || event.touches[ 0 ].clientX;
-					var clientY = event.clientY || event.touches[ 0 ].clientY;
-					
-					if(lastXposition < event.clientX){
-						direction = "left";	
+					var clientX = 0;
+					var clientY = 0;
+					if(OS =="Android" || OS =="IOS"){
+						clientX = event.touches[ 0 ].clientX;
+						clientY = event.touches[ 0 ].clientY;
 					}else{
-						direction = "right";
+						clientX = event.clientX ;
+						clientY = event.clientY ;
+						if(lastXposition < event.clientX){
+						direction = "left";	
+						}else{
+							direction = "right";
+						}
 					}
+					
 					lon = ( onMouseDownMouseX - clientX ) * 0.1 + onMouseDownLon;
 					lat = ( clientY - onMouseDownMouseY ) * 0.1 + onMouseDownLat;
 						
@@ -87,6 +101,26 @@
 				isDragging = false;
 			
 			});
+			
+			function getMobileOperatingSystem() {
+			  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+				  // Windows Phone must come first because its UA also contains "Android"
+				if (/windows phone/i.test(userAgent)) {
+					return "Windows Phone";
+				}
+
+				if (/android/i.test(userAgent)) {
+					return "Android";
+				}
+
+				// iOS detection from: http://stackoverflow.com/a/9039885/177710
+				if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+					return "iOS";
+				}
+
+				return "unknown";
+			}
 			
 			function onWindowResize() {
 

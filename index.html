@@ -251,14 +251,17 @@
 				camera.lookAt( new THREE.Vector3(500 * Math.sin( phi ) * Math.cos( theta ),500 * Math.cos( phi ),500 * Math.sin( phi ) * Math.sin( theta ) ));
 				placa.quaternion.copy( camera.quaternion );
 				if(vrmode){
+				
 					VRcontrols.update();	
 					effect.render(scene, camera);									
 					toggleFullScreen(true);
 					
 						
 				}else{
-					//giroscopio					
-					VRcontrols.update();					
+					//giroscopio no mobile
+					if(OS == "Android" || OS == "iOS"){
+						VRcontrols.update();
+					}										
 					renderer.render( scene, camera );
 					onWindowResize();					
 					toggleFullScreen(false);

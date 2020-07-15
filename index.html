@@ -154,6 +154,25 @@
 				onMouseDownMouseY = clientY;
 				onMouseDownLon = lon;
 				onMouseDownLat = lat;
+				
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				// update the picking ray with the camera and mouse position
+				raycaster.setFromCamera( mouse, camera );
+				intersects = raycaster.intersectObjects( scene.children );
+
+				for ( var i = 0; i < intersects.length; i++ ) {
+					
+					if(intersects[ i ].object.layer == 2){
+						//intersects[ i ].object.material.color.set( 0xff0000 );
+						sphere.material.map = THREE.ImageUtils.loadTexture( "textures/360Teste2.jpg" );
+						sphere.material.needsUpdate = true;
+						
+					}
+						
+
+				}
+				
 			})
 			.on('touchmove', function(e) {
 				if(isDragging){					

@@ -43,6 +43,14 @@
 			var fullScreenAlreadyChanged = false;
 			var VRcontrols = new DeviceOrientationControls(camera);
 			
+			
+			
+			// Textura inicial
+			//var myUrl = 'https://drive.google.com/file/d/1-xSnh67p81IVPkbjMEvdyXqoW5A8XLDC/view?usp=sharing';
+			//var textureLoader = new THREE.TextureLoader();
+			//textureLoader.crossOrigin = "Anonymous";
+			//var urlTexture = textureLoader.load(myUrl);
+			
 			var texture = new THREE.TextureLoader().load( "textures/IMA_banheiro.jpg" );
 			var material = new THREE.MeshBasicMaterial({ map: texture });	
 			var vrmode = false;			
@@ -52,6 +60,8 @@
 			var sphere = new THREE.Mesh( geometry, material );
 			sphere.layer = 1;
 			scene.add( sphere );
+			
+			
 			
 			//Placa
 			var texturePoint = new THREE.TextureLoader().load( "textures/point.png" );
@@ -269,7 +279,7 @@
 			animate();
 			
 		</script>
-		<button id="BT_VR" style="bottom: 0;  left: 0;  position: absolute;  width: 10%;">Modo VR</button>
+		<button id="BT_VR" style="bottom: 1%;  left: 1%; width:10%; height:10%;  position: absolute; background: url(textures/VRIcon.png); background-size: 80%; background-repeat: no-repeat; background-position: center;"></button>
 		
 	</body>
 	

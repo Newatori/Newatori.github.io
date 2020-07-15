@@ -256,7 +256,9 @@
 					toggleFullScreen(true);
 					
 						
-				}else{			
+				}else{
+					//giroscopio					
+					VRcontrols.update();					
 					renderer.render( scene, camera );
 					onWindowResize();					
 					toggleFullScreen(false);
